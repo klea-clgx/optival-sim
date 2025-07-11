@@ -73,9 +73,9 @@ def get_keyword_from_model(model):
             'HVE': 'Freddie',
             'Freddie Mac Home Value Explorer': 'HVE',      # Alternate for Freddie Mac
             'iAVM': 'iAVM',
-            'SiteXValue': 'BKFS',
-            'RVM': 'BKFS',
-            'ValueSure': 'BKFS',
+            'SiteXValue': 'SiteXValue',
+            'RVM': 'RVM',
+            'ValueSure': 'ValueSure',
             'FiveBridges': 'FiveBridges',
             'ClearAVMv3': 'ClearAVMv3',
         }
@@ -107,8 +107,8 @@ def read_files_once(unique_models, avm_folder):
                     continue  # Skip unsupported file formats
 
                 # For these specific models, only keep rows whose 'AVM Model Name' matches
-                if model in ['SiteXValue', 'RVM', 'ValueSure']:
-                    model_df = model_df[model_df['AVM Model Name'] == model]
+                # if model in ['SiteXValue', 'RVM', 'ValueSure']:
+                #     model_df = model_df[model_df['AVM Model Name'] == model]
 
                 model_file_data[model] = model_df
     return model_file_data

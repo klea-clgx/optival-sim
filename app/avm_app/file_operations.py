@@ -17,24 +17,32 @@ def read_files_once(unique_models, avm_folder):
     model_file_data = {}
     for model in unique_models:
         keyword = get_keyword_from_model(model)
+        print(f"[DEBUG] Model: {model}, Keyword: {keyword}")
         if keyword:
             file_name = find_file_with_keyword(avm_folder, keyword)
+            print(f"[DEBUG] Found file for {model}: {file_name}")
             if file_name:
                 file_path = os.path.join(avm_folder, file_name)
                 # Read either CSV or Excel
                 if file_path.endswith('.csv'):
-                    model_df = pd.read_csv(file_path)
+                    model_df = pd.read_csv(file_path, low_memory=False, index_col=False)
+
                 elif file_path.endswith('.xlsx'):
                     model_df = pd.read_excel(file_path)
                 else:
                     # Skip unsupported formats
                     continue
+                model_df.columns = model_df.columns.str.strip()
 
                 # Filter to rows that match the AVM Model Name (for some models)
-                if model in ['SiteXValue', 'RVM', 'ValueSure']:
-                    model_df = model_df[model_df['AVM Model Name'] == model]
+                # if model in ['SiteXValue', 'RVM', 'ValueSure']:
+                #     model_df = model_df[model_df['AVM Model Name'] == model]
 
                 model_file_data[model] = model_df
+    # print(f"[DEBUG] Loaded models in model_file_data: {list(model_file_data.keys())}")
+    # print(f"[DEBUG] Loaded {file_name} with shape {model_df.shape} and columns {model_df.columns.tolist()}")
+    # print(model_df.head(10))
+
     return model_file_data
 
 def autosize_columns(worksheet):
